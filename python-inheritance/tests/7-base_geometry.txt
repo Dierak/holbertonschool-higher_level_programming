@@ -1,4 +1,4 @@
->>> from base_geometry import BaseGeometry
+Doctests for BaseGeometry
 
 >>> bg = BaseGeometry()
 
