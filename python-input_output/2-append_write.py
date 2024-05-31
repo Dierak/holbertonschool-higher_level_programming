@@ -1,39 +1,25 @@
 #!/usr/bin/python3
-"""Defines a text file-reading function."""
+"""
+This module provides a function to append a string to the end of a text file (UTF8) and 
+returns the number of characters added.
+"""
 
 
-def read_lines(filename="", nb_lines=0):
-    """Print a given number of lines from a UTF8 text file to stdout.
-
-    This function reads and prints a specified number of lines from a text file.
-    If the number of lines specified is less than or equal to 0, the entire file is printed.
-    If the number of lines specified exceeds the total number of lines in the file,
-    the entire file is printed.
+def append_write(filename="", text=""):
+    """
+    Appends a string to a text file (UTF-8) and returns the number of characters added.
 
     Args:
-        filename (str): The name of the file to read from. Defaults to an empty string.
-        nb_lines (int): The number of lines to read from the file. Defaults to 0.
+        filename (str): The name of the file to append to. Defaults to an empty string.
+        text (str): The text to append to the file. Defaults to an empty string.
+
+    Returns:
+        int: The number of characters added to the file.
     """
-    with open(filename, encoding="utf-8") as f:
-        # If nb_lines is less than or equal to 0, print the entire file
-        if nb_lines <= 0:
-            print(f.read(), end="")
-            return
-
-        # Count the total number of lines in the file
-        lines = 0
-        for line in f:
-            lines += 1
-        f.seek(0)  # Reset the file pointer to the beginning of the file
-
-        # If nb_lines is greater than or equal to the total number of lines, print the entire file
-        if nb_lines >= lines:
-            print(f.read(), end="")
-            return
-
-        # Print the specified number of lines
-        else:
-            n = 0
-            while n < nb_lines:
-                print(f.readline(), end="")
-                n += 1
+    # Open the file in append mode with UTF-8 encoding using the with statement
+    with open(filename, "a", encoding="utf-8") as file:
+        # Write the provided text to the file and get the number of characters written
+        num_chars = file.write(text)
+    
+    # Return the number of characters written
+    return num_chars
