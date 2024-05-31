@@ -20,8 +20,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self._set_headers()
             self.wfile.write(b'OK')
         else:
-            self.send_error(404, 'Endpoint not found')
-            self.wfile.write(b'Endpoint not found')
+            self.custom_error(404, 'Endpoint not found', 'Endpoint not found')
+
+    def custom_error(self, code, message, content):
+        self.send_response(code)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
+        self.wfile.write(content.encode())
 
 def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=8000):
     server_address = ('', port)
