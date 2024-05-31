@@ -13,10 +13,6 @@ def read_lines(filename="", nb_lines=0):
     Args:
         filename (str): The name of the file to read from. Defaults to an empty string.
         nb_lines (int): The number of lines to read from the file. Defaults to 0.
-
-    Raises:
-        FileNotFoundError: If the file does not exist.
-        IOError: If an I/O error occurs during file reading.
     """
     with open(filename, encoding="utf-8") as f:
         # If nb_lines is less than or equal to 0, print the entire file
