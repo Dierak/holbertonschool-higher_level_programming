@@ -1,6 +1,17 @@
 #!/usr/bin/python3
-import pickle
+"""
+Description:
+    This module defines a custom Python class named CustomObject.
+    The CustomObject class represents an object with attributes like
+    name, age, and is_student.
 
+Classes:
+    CustomObject: Represents an object with attributes.
+    Provides methods for display, serialization, and deserialization.
+"""
+
+
+import pickle
 class CustomObject:
     def __init__(self, name, age, is_student):
         """
@@ -58,21 +69,3 @@ class CustomObject:
         except pickle.PickleError as e:
             print("Error occurred while deserializing the object:", e)
             return None
-
-# Example usage:
-if __name__ == "__main__":
-    # Creating an instance of CustomObject
-    obj = CustomObject("John", 25, True)
-    
-    # Displaying object attributes
-    obj.display()
-    
-    # Serializing the object
-    obj.serialize("custom_object.pkl")
-    
-    # Deserializing the object
-    loaded_obj = CustomObject.deserialize("custom_object.pkl")
-    if loaded_obj:
-        print("\nDeserialized Object:")
-        loaded_obj.display()
-
