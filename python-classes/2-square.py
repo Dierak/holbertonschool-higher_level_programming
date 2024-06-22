@@ -13,7 +13,8 @@ class Square:
         """Initialize a new Square.
 
         Args:
-            size (int): The size of the new square. It must be a non-negative integer.
+            size (int): The size of the new square.
+            It must be a non-negative integer.
 
         Raises:
             TypeError: If size is not an integer.
