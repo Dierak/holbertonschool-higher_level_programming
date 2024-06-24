@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import xml.etree.ElementTree as ET
 
 def serialize_to_xml(dictionary, filename):
@@ -8,18 +9,17 @@ def serialize_to_xml(dictionary, filename):
         dictionary (dict): The Python dictionary to serialize.
         filename (str): The filename to save the serialized XML data.
     """
-    def _serialize_element(parent, dictionary):
-        for key, value in dictionary.items():
-            child = ET.SubElement(parent, key)
-            if isinstance(value, dict):
-                _serialize_element(child, value)
-            else:
-                child.text = str(value)
-    
     try:
         root = ET.Element("data")
-        _serialize_element(root, dictionary)
         
+        # Iterate through the dictionary items and add them as child elements to the root
+        for key, value in dictionary.items():
+            # Create a new child element for each key-value pair
+            child = ET.Element(key)
+            child.text = str(value)  # Convert value to string before setting as text
+            root.append(child)
+        
+        # Write the XML tree to the provided filename
         tree = ET.ElementTree(root)
         tree.write(filename, encoding="utf-8", xml_declaration=True)
         print("Dictionary serialized to", filename)
@@ -38,52 +38,26 @@ def deserialize_from_xml(filename):
     Returns:
         dict: The deserialized Python dictionary.
     """
-    def _deserialize_element(element):
-        dictionary = {}
-        for child in element:
-            if list(child):  # If the child has children, it's a nested dictionary
-                dictionary[child.tag] = _deserialize_element(child)
-            else:
-                dictionary[child.tag] = child.text
-        return dictionary
-    
     try:
+        # Parse the XML file
         tree = ET.parse(filename)
         root = tree.getroot()
         
-        dictionary = _deserialize_element(root)
+        # Reconstruct the dictionary from XML elements
+        dictionary = {}
+        for child in root:
+            dictionary[child.tag] = child.text
         
         # Convert values to appropriate data types
-        def _convert_value(value):
+        for key, value in dictionary.items():
+            # Try converting to integer
             try:
-                return int(value)
+                dictionary[key] = int(value)
             except ValueError:
-                try:
-                    return float(value)
-                except ValueError:
-                    if value.lower() == 'true':
-                        return True
-                    elif value.lower() == 'false':
-                        return False
-                    else:
-                        return value
-        
-        def _convert_dictionary(d):
-            for key, value in d.items():
-                if isinstance(value, dict):
-                    _convert_dictionary(value)
-                else:
-                    d[key] = _convert_value(value)
-        
-        _convert_dictionary(dictionary)
+                # If conversion to integer fails, retain the value as string
+                pass
         
         return dictionary
-    except ET.ParseError as e:
-        print("Error during XML parsing:", e)
-        return None
-    except FileNotFoundError:
-        print(f"Error: File '{filename}' not found.")
-        return None
     except Exception as e:
         print("Error during deserialization:", e)
         return None
