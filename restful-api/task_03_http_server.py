@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
@@ -29,7 +28,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_response(404)
             self.send_header('Content-type', 'text/plain; charset=utf-8')
             self.end_headers()
-            self.wfile.write("404 Not Found - Endpoint not found".encode('utf-8'))
+            self.wfile.write("Endpoint not found".encode('utf-8'))
 
 def run():
     server_address = ('', 8000)
