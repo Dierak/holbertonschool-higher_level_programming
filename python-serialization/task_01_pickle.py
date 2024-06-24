@@ -10,8 +10,8 @@ Classes:
     Provides methods for display, serialization, and deserialization.
 """
 
-
 import pickle
+
 class CustomObject:
     def __init__(self, name, age, is_student):
         """
@@ -46,7 +46,7 @@ class CustomObject:
                 pickle.dump(self, file)
         except FileNotFoundError:
             print(f"Error: File '{filename}' not found.")
-        except pickle.PickleError as e:
+        except (pickle.PicklingError, EOFError, ImportError) as e:
             print("Error occurred while serializing the object:", e)
     
     @classmethod
@@ -66,6 +66,6 @@ class CustomObject:
         except FileNotFoundError:
             print(f"Error: File '{filename}' not found.")
             return None
-        except pickle.PickleError as e:
+        except (pickle.UnpicklingError, EOFError, ImportError) as e:
             print("Error occurred while deserializing the object:", e)
             return None
